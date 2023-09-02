@@ -1,4 +1,3 @@
-# back-clinica
-
-##yarn 
-##npx prisma migrate dev
+**Comandos**
+yarn 
+npx prisma migrate dev
