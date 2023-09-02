@@ -1,0 +1,60 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model sector {
+  id       Int      @id @default(autoincrement())
+  name     String   @unique
+  users    user[]
+  categories categories[]
+}
+
+model user {
+  id       Int      @id @default(autoincrement())
+  username String   @unique
+  password String
+  sector   sector?  @relation(fields: [sectorId], references: [id])
+  sectorId Int?
+  level String
+   totalFiles totalFiles[]
+}
+
+model patients {
+  id   Int     @id @default(autoincrement())
+  name String
+  totalFiles totalFiles[]
+}
+
+model categories {
+  id       Int        @id @default(autoincrement())
+  name     String
+  questions questions[]
+  sector   sector?    @relation(fields: [sectorId], references: [id])
+  sectorId Int?
+}
+
+
+model questions {
+  id           Int      @id @default(autoincrement())
+  question     String
+  type         String
+  category     categories @relation(fields: [categoryId], references: [id])
+  categoryId   Int
+}
+
+model totalFiles {
+  id        Int       @id @default(autoincrement())
+  userId    Int
+  patientId Int
+  fileId    Int
+  user      user      @relation(fields: [userId], references: [id])
+  patient   patients  @relation(fields: [patientId], references: [id])
+}
