@@ -14,9 +14,15 @@ export async function createPatient(name: string) {
 }
 
 export async function listPatients(name?: string) {
-  const whereCondition = name ? { name: { contains: name.toLowerCase() } } : {};
+  const whereCondition = name ? { name: { contains: name,mode: 'insensitive' } } : {};
   const patients = await prisma.patients.findMany({
-    where: whereCondition,
+    where:{
+      name:{
+        contains:name,
+        mode:'insensitive'
+
+      }
+    },
   });
 
   return {

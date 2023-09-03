@@ -11,50 +11,60 @@ datasource db {
 }
 
 model sector {
-  id       Int      @id @default(autoincrement())
-  name     String   @unique
-  users    user[]
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  users     user[]
   categories categories[]
+  created_at DateTime @default(now()) // Adicione created_at
+  updated_at DateTime @updatedAt      // Adicione updated_at
 }
 
 model user {
-  id       Int      @id @default(autoincrement())
-  username String   @unique
-  password String
-  sector   sector?  @relation(fields: [sectorId], references: [id])
-  sectorId Int?
-  level String
-   totalFiles totalFiles[]
+  id        Int       @id @default(autoincrement())
+  username  String    @unique
+  password  String
+  sector    sector?   @relation(fields: [sectorId], references: [id])
+  sectorId  Int?
+  level     String
+  totalFiles totalFiles[]
+  created_at DateTime @default(now()) // Adicione created_at
+  updated_at DateTime @updatedAt      // Adicione updated_at
 }
 
 model patients {
-  id   Int     @id @default(autoincrement())
-  name String
+  id        Int       @id @default(autoincrement())
+  name      String
   totalFiles totalFiles[]
+  created_at DateTime @default(now()) // Adicione created_at
+  updated_at DateTime @updatedAt      // Adicione updated_at
 }
 
 model categories {
-  id       Int        @id @default(autoincrement())
-  name     String
+  id        Int        @id @default(autoincrement())
+  name      String
   questions questions[]
-  sector   sector?    @relation(fields: [sectorId], references: [id])
-  sectorId Int?
+  sector    sector?    @relation(fields: [sectorId], references: [id])
+  sectorId  Int?
+  created_at DateTime @default(now()) // Adicione created_at
+  updated_at DateTime @updatedAt      // Adicione updated_at
 }
 
-
 model questions {
-  id           Int      @id @default(autoincrement())
-  question     String
-  type         String
-  category     categories @relation(fields: [categoryId], references: [id])
-  categoryId   Int
+  id        Int      @id @default(autoincrement())
+  question  String
+  type      String
+  category  categories @relation(fields: [categoryId], references: [id])
+  categoryId Int
+  created_at DateTime @default(now()) // Adicione created_at
+  updated_at DateTime @updatedAt      // Adicione updated_at
 }
 
 model totalFiles {
   id        Int       @id @default(autoincrement())
   userId    Int
   patientId Int
-  fileId    Int
   user      user      @relation(fields: [userId], references: [id])
   patient   patients  @relation(fields: [patientId], references: [id])
+  created_at DateTime @default(now()) // Adicione created_at
+  updated_at DateTime @updatedAt      // Adicione updated_at
 }
