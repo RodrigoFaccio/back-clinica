@@ -5,6 +5,8 @@ import routeCategory from './routes/categories';
 import routePatients from './routes/patients'; 
 import routeQuestions from './routes/questions'; 
 import routeAnswers from './routes/answers'; 
+import routeSector from './routes/sector'; 
+
 
 
 
@@ -23,6 +25,9 @@ app.use('/patients', routePatients);
 
 app.use('/questions', routeQuestions);
 app.use('/answers', routeAnswers);
+
+app.use('/sector', routeSector);
+
 
 
 
