@@ -62,14 +62,54 @@ export const listAnswersById = async (filesId:string)=>{
     }
    
 }
-export const listFilesAll = async ()=>{
-    const filesResponse =  await prisma.totalFiles.findMany()
+export const listFilesAll = async (userId:number,patientId:number)=>{
+    if(userId && !patientId){
 
+        const filesResponse = await prisma.totalFiles.findMany({
+            where:{
+              userId:userId
+            },
+          });
+          return{
+            code:200,
+           data:filesResponse
+        };
+    }else if(userId && patientId){
+        const filesResponse = await prisma.totalFiles.findMany({
+            where:{
+              userId:userId,
+              patientId:patientId
+            },
+          });
+          return{
+            code:200,
+           data:filesResponse
+        };
+    }else if( patientId){
 
-    return{
-        code:200,
-       data:filesResponse
-    };
+        const filesResponse = await prisma.totalFiles.findMany({
+            where:{
+              patientId:patientId
+            },
+          });
+          return{
+            code:200,
+           data:filesResponse
+        };
+    }
+    else{
+        console.log('aqui')
+
+        const filesResponse = await prisma.totalFiles.findMany();
+        return{
+            code:200,
+           data:filesResponse
+        };
+    }
+
+    
+
+   
 }
 export const listPatientById = async (patientId:number)=>{
     const filesResponse =  await prisma.totalFiles.findMany({

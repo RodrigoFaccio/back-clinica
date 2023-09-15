@@ -28,6 +28,7 @@ export async function listAnswersController(req: Request, res: Response) {
   }
 }
 export async function listAnswersByIdController(req: Request, res: Response) {
+
     const {fileId} = req.params;
    
     try {
@@ -40,9 +41,10 @@ export async function listAnswersByIdController(req: Request, res: Response) {
   }
   
   export async function listFilesAllController(req: Request, res: Response) {
-    console.log('CONTROLLER')
+    const {userId,patientId} = req.query;
+
     try {
-      const answers = await listFilesAll();
+      const answers = await listFilesAll(Number(userId),Number(patientId));
         res.status(200).json(answers);
     } catch (error) {
       // Handle error

@@ -5,7 +5,6 @@ import { listPatientById } from '../services/answers';
 
 
 const router = express.Router();
-console.log('route')
 
 router.post('/create',createAnswersController);
 router.get('/',listAnswersController);
