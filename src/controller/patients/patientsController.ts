@@ -1,4 +1,3 @@
-
 import { Request, Response } from 'express';
 
 import {
@@ -20,10 +19,10 @@ export async function createPatientController(req: Request, res: Response) {
 }
 
 export async function listPatientsController(req: Request, res: Response) {
-  const { name } = req.query;
+  const { name,date } = req.query;
 
   try {
-    const patients = await listPatients(name as string);
+    const patients = await listPatients(name as string,date as string);
     res.status(200).json(patients);
   } catch (error) {
     res.status(500).json({ error: 'An error occurred' });

@@ -13,23 +13,40 @@ export async function createPatient(name: string) {
   };
 }
 
-export async function listPatients(name?: string) {
-  const whereCondition = name ? { name: { contains: name,mode: 'insensitive' } } : {};
-  const patients = await prisma.patients.findMany({
-    where:{
-      name:{
-        contains:name,
-        mode:'insensitive'
+export async function listPatients(name?: string, date?: string) {
+  const nameCondition = name ? { name: { contains: name, mode: 'insensitive' } } : {};
 
-      }
+  let patients = await prisma.patients.findMany({
+    //@ts-ignore
+    where: {
+      ...nameCondition,
     },
   });
 
+  console.log("Total patients before date filter: ", patients.length);
+
+  if (date) {
+    const targetDate = new Date(date).toISOString().split("T")[0];
+    console.log("Target Date: ", targetDate);
+
+    patients = patients.filter(patient => {
+      const createdAt = new Date(patient.created_at).toISOString().split("T")[0];
+      console.log("Created At: ", createdAt);
+
+      return createdAt === targetDate;
+    });
+  }
+
+
+
+  console.log("Total patients after date filter: ", patients.length);
+
   return {
-    code:200,
-    data:patients
+    code: 200,
+    data: patients,
   };
 }
+
 export async function updatePatient(id: number, newName: string) {
   const updatedPatient = await prisma.patients.update({
     where: {
@@ -57,4 +74,3 @@ export async function deletePatient(id: number) {
     message: 'Patient deleted successfully',
   };
 }
-
