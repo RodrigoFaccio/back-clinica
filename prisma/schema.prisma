@@ -26,6 +26,7 @@ model user {
   sector    sector?   @relation(fields: [sectorId], references: [id])
   sectorId  Int?
   level     String
+  active     Boolean
   totalFiles totalFiles[]
   created_at DateTime @default(now()) // Adicione created_at
   updated_at DateTime @updatedAt      // Adicione updated_at

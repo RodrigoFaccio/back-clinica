@@ -4,7 +4,11 @@ import { prisma } from "../../prismaClient";
 const db = getFirestore(appFire);
 // Add a new document in collection "cities"
 
-export const createAnswers = async (userId:number,patientId:number,data:any)=>{
+export const createAnswers = async (userId:number,patientId:number,data:any,date:any)=>{
+    const newData = {
+        ...data,
+        date
+    }
     const createAnswers =  await prisma.totalFiles.create({
         data:{
             userId,
@@ -12,7 +16,7 @@ export const createAnswers = async (userId:number,patientId:number,data:any)=>{
         }
     })
 
-     await setDoc(doc(db, "respostas", String(createAnswers.id)), data);
+     await setDoc(doc(db, "respostas", String(createAnswers.id)), newData);
 
     return{
         code:200,
@@ -62,10 +66,10 @@ export const listAnswersById = async (filesId:string)=>{
     }
 
 }
-export const listFilesAll = async (userId:number,patientId:number)=>{
+export const listFilesAll = async (userId:number,patientId:number,date:string)=>{
     if(userId && !patientId){
 
-        const filesResponse = await prisma.totalFiles.findMany({
+        let filesResponse = await prisma.totalFiles.findMany({
             where:{
               userId:userId,
 
@@ -80,12 +84,22 @@ export const listFilesAll = async (userId:number,patientId:number)=>{
                 }
             }
           });
+          if (date) {
+            const targetDate = new Date(date).toISOString().split("T")[0];
+        
+            filesResponse = filesResponse.filter(patient => {
+              const createdAt = new Date(patient.created_at).toISOString().split("T")[0];
+              console.log("Created At: ", createdAt);
+        
+              return createdAt === targetDate;
+            });
+          }
           return{
             code:200,
            data:filesResponse
         };
     }else if(userId && patientId){
-        const filesResponse = await prisma.totalFiles.findMany({
+        let filesResponse = await prisma.totalFiles.findMany({
             where:{
               userId:userId,
               patientId:patientId
@@ -100,13 +114,23 @@ export const listFilesAll = async (userId:number,patientId:number)=>{
                 }
             }
           });
+          if (date) {
+            const targetDate = new Date(date).toISOString().split("T")[0];
+        
+            filesResponse = filesResponse.filter(patient => {
+              const createdAt = new Date(patient.created_at).toISOString().split("T")[0];
+              console.log("Created At: ", createdAt);
+        
+              return createdAt === targetDate;
+            });
+          }
           return{
             code:200,
            data:filesResponse
         };
     }else if( patientId){
 
-        const filesResponse = await prisma.totalFiles.findMany({
+        let filesResponse = await prisma.totalFiles.findMany({
             where:{
               patientId:patientId
             },
@@ -120,6 +144,16 @@ export const listFilesAll = async (userId:number,patientId:number)=>{
                 }
             }
           });
+          if (date) {
+            const targetDate = new Date(date).toISOString().split("T")[0];
+        
+            filesResponse = filesResponse.filter(patient => {
+              const createdAt = new Date(patient.created_at).toISOString().split("T")[0];
+              console.log("Created At: ", createdAt);
+        
+              return createdAt === targetDate;
+            });
+          }
           return{
             code:200,
            data:filesResponse
@@ -128,7 +162,7 @@ export const listFilesAll = async (userId:number,patientId:number)=>{
     else{
         console.log('aqui')
 
-        const filesResponse = await prisma.totalFiles.findMany({
+        let filesResponse = await prisma.totalFiles.findMany({
             include:{
                 patient:true,
                 user:{
@@ -139,6 +173,16 @@ export const listFilesAll = async (userId:number,patientId:number)=>{
                 }
             }
         });
+        if (date) {
+            const targetDate = new Date(date).toISOString().split("T")[0];
+        
+            filesResponse = filesResponse.filter(patient => {
+              const createdAt = new Date(patient.created_at).toISOString().split("T")[0];
+              console.log("Created At: ", createdAt);
+        
+              return createdAt === targetDate;
+            });
+          }
         return{
             code:200,
            data:filesResponse

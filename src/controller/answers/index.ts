@@ -3,13 +3,13 @@ import { createCategory, deleteCategory, listCategory, updateCategory } from '..
 import { createAnswers, listAnswers, listAnswersById, listFilesAll, listPatientById } from '../../services/answers';
 
 export async function createAnswersController(req: Request, res: Response) {
-    const {userId,patientId,data} = req.body;
+    const {userId,patientId,data,date} = req.body;
 
 
 
 
   try {
-    const answers = await createAnswers(userId,patientId,data);
+    const answers = await createAnswers(userId,patientId,data,date);
       res.status(200).json(answers);
   } catch (error) {
     // Handle error
@@ -41,10 +41,10 @@ export async function listAnswersByIdController(req: Request, res: Response) {
   }
   
   export async function listFilesAllController(req: Request, res: Response) {
-    const {userId,patientId} = req.query;
+    const {userId,patientId,date} = req.query;
 
     try {
-      const answers = await listFilesAll(Number(userId),Number(patientId));
+      const answers = await listFilesAll(Number(userId),Number(patientId),String(date));
         res.status(200).json(answers);
     } catch (error) {
       // Handle error
