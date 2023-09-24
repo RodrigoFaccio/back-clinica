@@ -13,7 +13,7 @@ export async function createAnswersController(req: Request, res: Response) {
       res.status(200).json(answers);
   } catch (error) {
     // Handle error
-    res.status(500).json({ error: 'An error occurred' });
+    res.status(500).json({ error: error });
   }
 }
 

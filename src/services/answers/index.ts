@@ -5,18 +5,21 @@ const db = getFirestore(appFire);
 // Add a new document in collection "cities"
 
 export const createAnswers = async (userId:number,patientId:number,data:any,date:any)=>{
-    const newData = {
+  console.log(data)  
+  const newData = {
         ...data,
         date
     }
+
     const createAnswers =  await prisma.totalFiles.create({
         data:{
             userId,
             patientId
         }
     })
+    console.log(createAnswers.id)
 
-     await setDoc(doc(db, "respostas", String(createAnswers.id)), newData);
+    const response  =  await setDoc(doc(db, "respostas", String(createAnswers.id)), newData);
 
     return{
         code:200,
