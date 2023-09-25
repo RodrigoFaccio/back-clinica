@@ -78,7 +78,8 @@ export const listPatientById = async (patientId:number)=>{
             
         },
         include:{
-            patient:true
+            patient:true,
+            user:true
         }
     })
 
