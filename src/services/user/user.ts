@@ -76,3 +76,31 @@ export async function deleteUser(id: number) {
     message: 'usuario deletado ',
   };
 }
+export async function listUserServices(name:string) {
+  const whereCondition = name ? { username: { contains: name,mode: 'insensitive' } } : {};
+console.log(name)
+  if(name!=='undefined'){
+console.log('search')
+
+    var patients = await prisma.user.findMany({
+      where:{
+        username:{
+          contains:name,
+          mode:'insensitive'
+  
+        }
+      },
+    });
+  }else{
+console.log('no')
+
+    var patients = await prisma.user.findMany();
+  }
+  
+
+  return {
+    code:200,
+    data:patients
+  };
+}
+

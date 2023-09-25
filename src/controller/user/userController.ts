@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { createUser, deleteUser, login, updateUser } from '../../services/user/user';
+import { createUser, deleteUser, listUserServices, login, updateUser } from '../../services/user/user';
 
 export async function loginUserController(req: Request, res: Response) {
   const { username, password } = req.body;
@@ -72,4 +72,14 @@ export async function deleteUserController(req: Request, res: Response) {
     res.status(500).json({ error: 'An error occurred' });
   }
 }
-
+export async function listUsers(req: Request, res: Response) {
+const {name } = req.query
+  try {
+    const user = await listUserServices(String(name));
+   
+      res.json(user);
+  } catch (error) {
+    // Handle error
+    res.status(500).json({ error: 'An error occurred' });
+  }
+}
